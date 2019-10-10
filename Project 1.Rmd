@@ -1,0 +1,380 @@
+---
+title: "Project 1--Basic Programming and EDA"
+author: "Troy Miller"
+date: '`r format(Sys.time(), "%A, %B %d, %Y @ %I:%M %p")`'
+output: 
+  html_document: 
+    code_folding: hide
+    highlight: textmate
+    theme: yeti
+---
+
+```{r globalopts, include = FALSE}
+# LOAD ALL PACKAGES IN THIS CHUNK
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+library(moments)
+opts_chunk$set(comment = "", message = FALSE, warning = FALSE)
+```
+
+## {.tabset}
+
+### **Problem 1**
+  
+Create, store, and print out the vectors below using functions `:`, `c`, `seq`, and/or `rep`. Use the object names indicated in CAPS.
+
+* X: The sample space of a random variable X is integers {0, 1, 2, ..., 10}.
+* PH: A machine reads the pH of a solution to one decimal place of precision.
+* CLOCK: A clock counts down from 60 to 0 seconds in whole-second increments.
+* PLAY: A player in a game can choose to play rock, paper, scissors, lizard, or Spock.
+* CLASS: In a class of 60 people, there are 5 groups in the following proportions.
+    + Actuarial Science = 15%
+    + Computer Science = 40%
+    + Mathematical Sciences = 20%
+    + Other Sciences = 20%
+    + Business = 5%
+
+```{r prob1codeX}
+# Put your code here.
+X <- 0:10
+X
+```
+
+```{r prob1codePH}
+PH <- seq(0, 14, .1)
+PH
+```
+
+```{r prob1codeCLOCK}
+CLOCK <- seq(60, 0, -1)
+CLOCK
+```
+
+```{r prob1codePLAY}
+PLAY <- c("rock", "paper", "scissors", "lizard", "Spock")
+PLAY
+```
+
+```{r prob1codeCLASS}
+# Put your code here.
+c1 <- rep(x = "Actuarial Science", times = 9)
+c2 <- rep(x = "Computer Science", time = 24)
+c3 <- rep(x = "Mathematical Sciences", times = 12)
+c4 <- rep(x = "Other Sciences", times = 12)
+c5 <- rep(x = "Business", times = 3)
+CLASS <- c(c1, c2, c3, c4, c5)
+CLASS
+```
+
+
+### **Problem 2**
+
+In DataCamp's [Introduction to R](https://www.datacamp.com/courses/free-introduction-to-r) course, you learned about matrices and data frames. For the Chapter 3 exercises "Adding a row" and "A little arithmetic with matrices (2)," the course created `star_wars_matrix2` and `ticket_prices_matrix` for you because you had already practiced similar skills in other exercises. 
+
+A) Write the code to create `star_wars_matrix2`, including the row and column names. 
+
+```{r prob2sw2matrix}
+# Put your code here.
+box_office <- c(474.5, 552.5, 310.7, 338.7, 380.3, 468.5)
+star_wars_matrix2 <- matrix(box_office, nrow = 3, byrow = TRUE,
+                           dimnames = list(c("The Phantom Menace", "Attack of the Clones", "Revenge of the Sith"), 
+                                           c("US", "non-US")))
+head(star_wars_matrix2)
+
+```
+
+B) Create `ticket_prices_matrix` as a data frame rather than a matrix using `data.frame`. The matrix is supposed to represent increasing ticket prices over time, but it DataCamp assigns higher prices to the older movies. Correct this error and put the prices in the correct order in your version.
+
+```{r prob2pricedf}
+# Put your code here.
+US <- c(4.0, 4.5, 4.9, 5.0, 6.0, 7.0)
+non_US <- c(4.0, 4.5, 4.9, 5.0, 6.0, 7.0)
+Title <- c("The Phantom Menace", "Attack of the Clones", "Revenge of the Sith", "A New Hope", "The Empire Strikes Back", "Return of the Jedi")
+ticket_prices_matrix <- data.frame(Title, US, non_US)
+head(ticket_prices_matrix)
+```
+
+
+### **Problem 3**
+
+Write a `for` loop to create a vector `FIB` that contains the first 10 numbers in the classic [Fibonacci sequence](https://www.mathsisfun.com/numbers/fibonacci-sequence.html). 
+
+![](https://www.onlinemathlearning.com/image-files/fibonacci-golden-spiral.png)
+
+Store and print `FIB` when it is finished. If you don't get the correct sequence of numbers, check your work!
+  
+```{r prob3loop}
+# Put your code here.
+start <- 3
+FIB <- c(0, 1)
+for(i in start:10) {
+  FIB[start] = (FIB[start - 1] + FIB[start - 2])
+  start = (start + 1)
+}
+
+FIB
+```
+
+Now adapt your code as the basis for a function `FIBfunction` that will generate the first **n** digits of the Fibonacci sequence when the user inputs the argument `n`. You should be able to save the vector output of your function as an object using the assignment arrow (e.g., `<-` (e.g., `outputvector <- FIBfunction(inputvalue)`). Once you have a working function, demonstrate it using `n` = 20. Store the result and print it out.
+
+```{r prob3func}
+# Put your code here.
+fib_sum <- function(n) {
+  start <- 3
+  FIB <- c(0, 1)
+  for(i in start:n) {
+    FIB[start] = (FIB[start - 1] + FIB[start - 2])
+    start = (start + 1)
+  }
+  return(FIB)
+}
+output <- fib_sum(20)
+output
+
+```
+
+
+### **Problem 4**
+
+NOTE: All plots should have appropriate titles and axis labels.
+
+***
+The dataset [STT3850majors](https://raw.githubusercontent.com/STAT-JET-ASU/Datasets/master/Instructor/STT3850majors.csv) contains, as the name suggests, information about the majors in Dr. Thomley's STT3850 sections for several semesters/academic years.
+
+A) Use `read_csv` to import the data, then `glimpse` and `head` to display the dataset structure.
+
+```{r prob4dataset}
+# Put your code here.
+STT <- read_csv("https://raw.githubusercontent.com/STAT-JET-ASU/Datasets/master/Instructor/STT3850majors.csv")
+glimpse(STT)
+head(STT)
+```
+
+B) Convert `Year` into a factor with the order `Freshman`, `Sophomore`, `Junior`, `Senior`, and `Graduate Certificate Program`. Then make a frequency table for the variable.
+
+```{r prob4recode}
+# Put your code here.
+Year <- factor(STT$Year,c( "Freshman", "Sophomore", "Junior", "Senior", "Graduate Certificate Program"))
+table(Year)
+```
+
+C) Make a `ggplot2` barplot to show the distribution of `CodedMajor` with proportions on the y-axis.
+
+```{r prob4barplot1}
+# Put your code here.
+ggplot(STT, aes(x = CodedMajor)) +
+ geom_bar(aes(y=..count../sum(..count..))) +
+  ylab("proportion") +
+  ggtitle("Distribution of CodedMajor by proportion")
+```
+
+D) Make a `ggplot2` barplot that shows proportion of `CodedMajor` within each academic year `AY`.
+
+```{r prob4barplot2}
+# Put your code here.
+ggplot(STT, aes(x = AY, fill = CodedMajor)) +
+ geom_bar(position = "fill") +
+  ylab("proportion") +
+  ggtitle("Coded Majors by Academic Year")
+```
+
+E) Which major is most common in Dr. Thomley's STT3850 classes? Has it been a constant proportion over the academic years contained in the dataset? If so, about what proportion? If not, what kind of pattern do you see?
+
+**ANSWER**: The most common major is Computer Science, with a close second usually being Mathematical Sciences. It has not been a constant proportion every year, it has only been a majority one of the years on this graph. It had hovered aroung that 50% mark but now the other Sciiences and Mathematical Sciences are making Computer Science less of the total amount.
+
+
+### **Problem 5**
+
+NOTE: All plots should have appropriate titles and axis labels. If you need to use a calculated numerical answer in a subsequent analysis, you should store it and call it back when needed, not type the value by hand. If you store a calculated answer, be sure to print it as well so I can see it in your writeup.
+
+***
+In January 2007, Entertainment Weekly magazine featured a cover story about three Academy Award nominees for Best Actress: Meryl Streep, Judy Densch, and Helen Mirren. One primary focus of the article was how old these three women were, relative to previous winners, and the perceived Hollywood bias in favor of younger actresses. This discussion that persists in one form or another to this day. (data: [oscarages.csv](https://raw.githubusercontent.com/STAT-JET-ASU/Datasets/master/Instructor/oscarages.csv))
+
+A) Use `read_csv` to import the data, then `glimpse` and `head` to display the dataset structure.
+
+```{r prob5dataset}
+# Put your code here.
+e <- read_csv("https://raw.githubusercontent.com/STAT-JET-ASU/Datasets/master/Instructor/oscarages.csv")
+glimpse(e)
+head(e)
+```
+
+B) Use `filter` and a single `summarize` (with any other necessary functions) to compute and display five-number summaries, IQR, and the lower and upper fences for Best Actor and Best Actress winners prior to 2007.
+
+```{r prob6summaries}
+# Put your code here.
+e %>%
+  filter(ceremony < 2007) %>%
+  summarize(
+           min   = fivenum(age)[1],
+           Q1    = fivenum(age)[2],
+           med   = fivenum(age)[3],                  
+           Q3    = fivenum(age)[4],
+           max   = fivenum(age)[5],
+           IQR   = IQR(age),
+           Upper_F = Q1 + (1.5 * IQR),
+           Lower_F = Q3 - (1.5 * IQR))
+```
+
+C) Create boxplots to compare the ages of Best Actor and Best Actress winners prior to 2007.
+
+```{r prob5boxplots}
+# Put your code here.
+# USE GROUPBY TO CREATE TO SIDE BY SIDE GRAPHS
+
+
+e_filtered <- e %>%
+    filter(ceremony < 2007) %>%
+    filter(category == "Best Actor" | category == "Best Actress") %>%
+    group_by(category)
+    
+
+
+e_filtered %>%  
+  ggplot(aes(x = category, y = age)) +
+  geom_boxplot()
+  
+```
+
+D) Which actress actually won the Best Actress Oscar in 2007? How old was she? For what movie did she win? Use the `filter` and `select` functions to find and display the answer, not visual inspection of the dataset.
+
+```{r prob5winner}
+# Put your code here.
+E <- e %>%
+  filter(ceremony == 2007) %>%
+  filter(category == "Best Actress")
+
+output <- c(select(E, name), select(E, age), select(E, title))
+output
+```
+
+F) Was the 2007 Best Actress winner an outlier compared to previous Best Actress winners? If she were a man, would she have been an outlier compared to previous Best Actor winners? Determine the answers using code, not visual inspection.
+
+```{r prob5outlier}
+# Put your code here.
+e_Male <- e %>%
+  filter(ceremony < 2007) %>%
+    filter(category == "Best Actor")
+
+e_Female <- e %>%
+  filter(ceremony < 2007) %>%
+    filter(category == "Best Actress")
+
+test_age <- select(E, age)
+ IQRM <- IQR(e_Male$age)
+ IQRF <- IQR(e_Female$age)
+ fna2 <- fivenum(e_Female$age)[4]
+ fna2m <- fivenum(e_Male$age)[4]
+actress_avg <- fna2 + (1.5 * IQRF)
+if (test_age > actress_avg)
+{
+  print("Best Actress 2007 is an outlier with females")
+}else {
+  print("Best Actress 2007 is not an outlier with females")
+}
+#She is an outlier for women, not for men
+actor_avg <- fna2m + (1.5 * IQRM)
+if(test_age > actor_avg)
+{
+  
+  print("Best Actress 2007 is an outlier with men")
+}else
+{
+  print("Best Actress 2007 is not an outlier with men")
+}
+
+```
+
+G) In what way do your analyses appear to support an assertion of age bias againt women in Hollywood? Cite values of specific statistics and/or features of your boxplots in your discussion. 
+
+**ANSWER**: The data would seem to agree that there is a bias against older women in Hollywood, the median age of a male winner is 9 years older and the IQR of men is starting around the point the female IQR ends.
+
+
+### **Problem 6**
+
+NOTE: You do not need to label your plots here. If you store a calculated answer, be sure to print it as well.
+
+***
+A) Go to the Galton height data [description](https://stat-jet-asu.github.io/Datasets/InstructorDescriptions/galtonheightdata.html) and import the dataset. Use `glimpse` and `head` to display the dataset structure.
+
+```{r prob7dataset}
+# Put your code here.
+galton <- read_csv("https://raw.githubusercontent.com/STAT-JET-ASU/Datasets/master/Instructor/galtonheightdata.csv")
+glimpse(galton)
+head(galton)
+```
+
+B) Use `mutate` and `ifelse` or `case_when` to recode two variables: (1) `Gender` to "male" and female"; and (2)  `Height` so that all the female heights are multiplied by 1.08 while male heights stay the same.
+
+```{r prob7recode}
+# Put your code here.
+mutated_g <- galton %>%
+  mutate(Gender = case_when(Gender == "M" ~ "male", Gender == "F" ~ "female")) %>%
+  mutate(Height = case_when(Gender == "female" ~ (Height * 1.08), Gender == "male" ~ Height))
+
+head(mutated_g)
+
+
+  
+```
+
+C) Assess recoded height for normality using a density plot, ECDF plot, QQ plot, skewness and kurtosis. All plots should have a theoretical reference line for comparison. State your conclusion and how you made your decision.
+
+```{r prob7histogram}
+# Put your code here.
+```
+
+```{r prob7density}
+# Put your code here.
+galton_stats <- mutated_g %>% 
+  summarize(xbar = mean(Height), sd = sd(Height))
+ggplot(mutated_g, aes(x = Height)) +
+  geom_density() +
+  stat_function(fun = dnorm, 
+                args = list(galton_stats$xbar, galton_stats$sd),   
+                color = "orange") +
+  ggtitle("Height density vs Normal")
+```
+
+```{r prob7ecdf}
+# Put your code here.
+ggplot(mutated_g, aes(x = Height)) +
+  stat_ecdf() +
+  stat_function(fun = pnorm, 
+                args = list(galton_stats$xbar, galton_stats$sd), 
+                color = "orange") +
+  ggtitle("Height ECDF vs Normal")
+```
+
+```{r prob7qqplot}
+# Put your code here.
+ggplot(mutated_g, aes(sample = Height)) + 
+  stat_qq() +
+  stat_qq_line(color = "orange") +
+  ggtitle("Height QQplot vs Normal")
+```
+
+```{r prob7skewkurt}
+# Put your code here.
+skewK <- tibble(statistic = c("Skewness", "Kurtosis", "Excess K"),
+                theory = c(0, 3, 0),
+                data   = round(c(skewness(mutated_g$Height), 
+                                 kurtosis(mutated_g$Height), 
+                                 kurtosis(mutated_g$Height) - 3), 
+                               2))
+print.data.frame(skewK, row.names = FALSE)
+```
+
+**ANSWER**: My conclusions from looking at all of these graphs is that the data is very close to being a normal distribution, even with mutating the data from the original data set to attempt to normalize the differing averages between men and women, there is a slight difference between the heights of the two at the top of the Bell curve with some variations on either sides. This outcome is expected because life is not perfectly distributed.
+
+
+### Session Info
+
+**Names of Collaborators**: Tim Grubb
+
+```{r}
+sessionInfo()
+```
+
