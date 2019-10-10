@@ -136,7 +136,7 @@ summary(spr_lm)
 
 ```
 
-**ANSWER:**
+**ANSWER:** The intercept is the base value you are adding to for Height, and for every increase of Height0 by 1 cm Height5 is thought to be 1.15 cm larger, and if the seedling is not put in fertilizer it is on average 14.71 cm shorter than it otherwise would be.
 
 C) Use `get_regression_points()` to extract the fitted values and residuals from the model. Based on this information and other summary measures, do you think this model would do a good job of predicting the heights of other spruce seedlings grown under the same conditions? Explain.
 
@@ -144,7 +144,7 @@ C) Use `get_regression_points()` to extract the fitted values and residuals from
 get_regression_points(spr_lm)
 ```
 
-**ANSWER:**
+**ANSWER:** No, I do not believe that this model does a good job of predicting the heights of seedlings because the residuals are very high for the difference between Height5 and Height5_hat.
 
 
 ### **Problem 3**
