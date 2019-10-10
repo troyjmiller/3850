@@ -110,7 +110,7 @@ ff_rp
 
 E) Suppose someone says, "We can interpret R^2^ as the percentage of calories in each burger that comes from fat." Explain why this is incorrect and give a better interpretation of the R^2^ value for this model in context. 
 
-**ANSWER:** No, the R-squared value is more a measure of how the fat is responsible for the variation in the amount of the calories in any burger.
+**ANSWER:** No, the R-squared value is more a measure of how the calories is responsible for the variation in the amount of the fat in any burger.
 
 
 ### **Problem 2**
@@ -144,7 +144,7 @@ C) Use `get_regression_points()` to extract the fitted values and residuals from
 get_regression_points(spr_lm)
 ```
 
-**ANSWER:** No, I do not believe that this model does a good job of predicting the heights of seedlings because the residuals are very high for the difference between Height5 and Height5_hat.
+**ANSWER:** No, I do not believe that this model does a good job of predicting the heights of seedlings because the residuals are very high for the difference between Height5 and Height5_hat. For example, Tree 9 had a 30.27% difference between the actual height at 5 years and the height at five years as predicted by Height5_hat, this is a substancial difference that could change data interpretation.  
 
 
 ### **Problem 3**
@@ -187,7 +187,7 @@ get_regression_table(mon_reg2)
 
 D) Discuss the differences between the your models (e.g., equations, R^2^ values, residuals, other relevant measures of fit). Why did taking out the railroads and utilities produce these changes?
 
-**ANSWER:** Every type of measurement moved closer towards a linear model because those two types of properties had a wildly different pricing scheme from the rest the properties which made up the majority. R-Squared went from .771 to .989, mse went from 26.43 to 1.29, and standard error went from 2.667 to .63.
+**ANSWER:** Every type of measurement moved closer towards a linear model because those two types of properties had a pricing scheme with zero slope that had no correlation between distance from Go and price while the rest the properties which made up the majority did show a correlation between spaces from Go and the price. R-Squared went from .771 to .989, mse went from 26.43 to 1.29, and standard error went from 2.667 to .63.
 
 ### Session Info
 
